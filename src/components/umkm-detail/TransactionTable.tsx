@@ -1,11 +1,21 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Download, ArrowUpCircle, ArrowDownCircle, RefreshCw } from "lucide-react";
+import { Download, ArrowUpCircle, ArrowDownCircle, RefreshCw, Plus } from "lucide-react";
 import { useTransactions, useTransactionStats } from "@/hooks/use-transactions";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { TransactionForm } from "./TransactionForm";
 
 interface TransactionTableProps {
   umkmId: string;
@@ -13,25 +23,30 @@ interface TransactionTableProps {
 
 export const TransactionTable = ({ umkmId }: TransactionTableProps) => {
   const { toast } = useToast();
-  
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   // Fetch transactions from Supabase
-  const { 
-    data: transactions, 
-    isLoading, 
-    isError, 
+  const {
+    data: transactions,
+    isLoading,
+    isError,
     error,
-    refetch 
+    refetch
   } = useTransactions({ umkmId });
 
   // Fetch transaction statistics
   const {
     data: stats,
-    isLoading: isLoadingStats
+    isLoading: isLoadingStats,
+    refetch: refetchStats
   } = useTransactionStats(umkmId);
 
   const totalIncome = stats?.totalIncome || 0;
   const totalExpense = stats?.totalExpense || 0;
   const netProfit = stats?.netProfit || 0;
+
+  // Get last balance from the most recent transaction (first in list)
+  const lastBalance = transactions && transactions.length > 0 ? transactions[0].balance : 0;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('id-ID', {
@@ -60,6 +75,7 @@ export const TransactionTable = ({ umkmId }: TransactionTableProps) => {
 
   const handleRefresh = () => {
     refetch();
+    refetchStats();
     toast({
       title: 'Memuat ulang...',
       description: 'Data transaksi sedang dimuat ulang',
@@ -96,17 +112,39 @@ export const TransactionTable = ({ umkmId }: TransactionTableProps) => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" className="bg-primary hover:bg-primary/90">
+                <Plus className="w-4 h-4 mr-2" />
+                Tambah Transaksi
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Tambah Transaksi Baru</DialogTitle>
+                <DialogDescription>
+                  Masukkan detail transaksi pemasukan atau pengeluaran.
+                </DialogDescription>
+              </DialogHeader>
+              <TransactionForm
+                umkmId={umkmId}
+                lastBalance={lastBalance}
+                onSuccess={() => setIsDialogOpen(false)}
+              />
+            </DialogContent>
+          </Dialog>
+
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={handleRefresh}
             disabled={isLoading}
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleExport}
             disabled={isLoading}
           >

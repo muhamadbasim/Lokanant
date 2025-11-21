@@ -56,6 +56,7 @@ export const useAddTransaction = () => {
     mutationFn: async (transaction: Omit<Transaction, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('transactions')
+        // @ts-ignore
         .insert([transaction])
         .select()
         .single();
@@ -68,6 +69,7 @@ export const useAddTransaction = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['transaction-stats'] });
       toast({
         title: 'Berhasil',
         description: 'Transaksi berhasil ditambahkan',
@@ -92,6 +94,7 @@ export const useUpdateTransaction = () => {
     mutationFn: async ({ id, ...updates }: Partial<Transaction> & { id: string }) => {
       const { data, error } = await supabase
         .from('transactions')
+        // @ts-ignore
         .update(updates)
         .eq('id', id)
         .select()
@@ -105,6 +108,7 @@ export const useUpdateTransaction = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['transaction-stats'] });
       toast({
         title: 'Berhasil',
         description: 'Transaksi berhasil diupdate',
@@ -138,6 +142,7 @@ export const useDeleteTransaction = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['transaction-stats'] });
       toast({
         title: 'Berhasil',
         description: 'Transaksi berhasil dihapus',
