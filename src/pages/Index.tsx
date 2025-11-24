@@ -4,6 +4,7 @@ import { ArrowRight, Zap, Users, BarChart3, Webhook } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import batikPattern3 from "@/assets/batik-pattern-3.png";
 import batikPattern4 from "@/assets/batik-pattern-4.png";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-data relative overflow-hidden">
       {/* Batik Pattern Background */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
           backgroundImage: `url(${batikPattern3})`,
@@ -19,21 +20,12 @@ const Index = () => {
           backgroundRepeat: 'repeat',
         }}
       />
-      
+
       <header className="border-b border-border bg-card/50 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 rounded-lg overflow-hidden">
-              <div 
-                className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage: `url(${batikPattern4})`,
-                  backgroundSize: 'cover',
-                }}
-              />
-              <div className="relative w-10 h-10 bg-gradient-primary flex items-center justify-center">
-                <span className="text-lg font-bold text-primary-foreground">LC</span>
-              </div>
+              <img src={logo} alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">Lokakarya Connect</h1>
@@ -101,7 +93,7 @@ const Index = () => {
             return (
               <Card key={feature.title} className="p-6 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden group">
                 {/* Batik Pattern on Hover */}
-                <div 
+                <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"
                   style={{
                     backgroundImage: `url(${batikPattern4})`,
