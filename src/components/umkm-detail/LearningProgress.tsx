@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Award, PlayCircle } from "lucide-react";
+import { GameModal } from "./GameModal";
 
 interface Course {
   name: string;
@@ -16,11 +18,25 @@ interface LearningProgressProps {
 }
 
 export const LearningProgress = ({ courses }: LearningProgressProps) => {
+  const [isGameOpen, setIsGameOpen] = useState(false);
+  const [currentGameUrl, setCurrentGameUrl] = useState("/game.html");
+
   const completedCourses = courses.filter(c => c.completed).length;
   const totalProgress = Math.round(courses.reduce((sum, c) => sum + c.progress, 0) / courses.length);
 
+  const handleOpenGame = (courseName: string) => {
+    if (courseName.includes("Manajemen Keuangan")) {
+      setCurrentGameUrl("/game-finance.html");
+    } else {
+      setCurrentGameUrl("/game.html");
+    }
+    setIsGameOpen(true);
+  };
+
   return (
     <div className="space-y-6">
+      <GameModal isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} gameUrl={currentGameUrl} />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-6 bg-card border border-primary/30">
           <div className="flex items-center justify-between">
@@ -85,7 +101,7 @@ export const LearningProgress = ({ courses }: LearningProgressProps) => {
                     </Button>
                   ) : null
                 ) : (
-                  <Button size="sm" variant="default">
+                  <Button size="sm" variant="default" onClick={() => handleOpenGame(course.name)}>
                     <PlayCircle className="w-4 h-4 mr-2" />
                     Lanjutkan
                   </Button>
