@@ -108,7 +108,7 @@ export const TransactionTable = ({ umkmId }: TransactionTableProps) => {
         <div>
           <h3 className="text-xl font-bold text-foreground">Riwayat Transaksi</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {isLoading ? 'Memuat data...' : `${transactions?.length || 0} transaksi dari Supabase`}
+            {isLoading ? 'Memuat data...' : `${transactions?.length || 0} transaksi`}
           </p>
         </div>
         <div className="flex gap-2">

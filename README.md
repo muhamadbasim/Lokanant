@@ -1,22 +1,16 @@
-# Welcome to your Lovable project
+# Welcome to Lokananta Project
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/5994b71d-14db-42c2-b59b-063005b51e05
+**URL**: https://projectbudayagolokananta.pages.dev
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/5994b71d-14db-42c2-b59b-063005b51e05) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -59,15 +53,20 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/5994b71d-14db-42c2-b59b-063005b51e05) and click on Share -> Publish.
+Deploy to Cloudflare Pages:
 
-## Can I connect a custom domain to my Lovable project?
+```sh
+npm run build
+npx wrangler pages deploy dist --project-name=projectbudayagolokananta
+```
 
-Yes, you can!
+## Environment Variables
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Make sure to set these environment variables in Cloudflare Pages Dashboard:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
