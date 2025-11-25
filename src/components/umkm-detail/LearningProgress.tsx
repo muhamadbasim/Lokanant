@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Award, PlayCircle } from "lucide-react";
 import { GameModal } from "./GameModal";
+import { CertificateModal } from "./CertificateModal";
 
 interface Course {
   name: string;
@@ -15,11 +16,14 @@ interface Course {
 
 interface LearningProgressProps {
   courses: Course[];
+  recipientName?: string;
 }
 
-export const LearningProgress = ({ courses }: LearningProgressProps) => {
+export const LearningProgress = ({ courses, recipientName = "Peserta UMKM" }: LearningProgressProps) => {
   const [isGameOpen, setIsGameOpen] = useState(false);
+  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [currentGameUrl, setCurrentGameUrl] = useState("/game.html");
+  const [selectedCourse, setSelectedCourse] = useState("");
 
   const completedCourses = courses.filter(c => c.completed).length;
   const totalProgress = Math.round(courses.reduce((sum, c) => sum + c.progress, 0) / courses.length);
@@ -33,9 +37,22 @@ export const LearningProgress = ({ courses }: LearningProgressProps) => {
     setIsGameOpen(true);
   };
 
+  const handleOpenCertificate = (courseName: string) => {
+    setSelectedCourse(courseName);
+    setIsCertificateOpen(true);
+  };
+
   return (
     <div className="space-y-6">
       <GameModal isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} gameUrl={currentGameUrl} />
+
+      <CertificateModal
+        isOpen={isCertificateOpen}
+        onClose={() => setIsCertificateOpen(false)}
+        courseName={selectedCourse}
+        recipientName={recipientName}
+        date={new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-6 bg-card border border-primary/30">
@@ -95,7 +112,7 @@ export const LearningProgress = ({ courses }: LearningProgressProps) => {
               <div className="flex gap-2 mt-3">
                 {course.completed ? (
                   course.certificateUrl ? (
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleOpenCertificate(course.name)}>
                       <Award className="w-4 h-4 mr-2" />
                       Lihat Sertifikat
                     </Button>

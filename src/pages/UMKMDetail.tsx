@@ -37,7 +37,7 @@ const UMKMDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-data relative overflow-hidden">
       {/* Batik Background Pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.02] pointer-events-none"
         style={{
           backgroundImage: `url(${batikPattern4})`,
@@ -45,7 +45,7 @@ const UMKMDetail = () => {
           backgroundRepeat: 'repeat',
         }}
       />
-      
+
       <div className="container mx-auto px-4 py-8 space-y-6 relative z-10">
         <Button variant="ghost" onClick={() => navigate("/dashboard")} className="mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -88,7 +88,7 @@ const UMKMDetail = () => {
           </TabsContent>
 
           <TabsContent value="learning">
-            <LearningProgress courses={umkm.courses} />
+            <LearningProgress courses={umkm.courses} recipientName={umkm.name} />
           </TabsContent>
 
           <TabsContent value="digital">
