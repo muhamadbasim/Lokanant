@@ -2,12 +2,17 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Globe, Eye, MousePointerClick, TrendingUp, Share2, QrCode } from "lucide-react";
 import { UMKMDetailed } from "@/data/umkmDetailedData";
+import websitePreview from "@/assets/website-preview.png";
 
 interface DigitalPresenceProps {
   umkm: UMKMDetailed;
 }
 
 export const DigitalPresence = ({ umkm }: DigitalPresenceProps) => {
+  const handleVisitWebsite = () => {
+    window.open("https://lokakarya.my.id/", "_blank");
+  };
+
   return (
     <div className="space-y-6">
       {umkm.websiteUrl && (
@@ -19,16 +24,16 @@ export const DigitalPresence = ({ umkm }: DigitalPresenceProps) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <div className="bg-muted rounded-lg p-4 mb-4 aspect-video flex items-center justify-center">
-                <div className="text-center">
-                  <Globe className="w-16 h-16 text-muted-foreground mx-auto mb-3" />
-                  <p className="text-sm text-muted-foreground">Website Preview</p>
-                  <p className="text-xs text-muted-foreground mt-1">{umkm.websiteUrl}</p>
-                </div>
+              <div className="bg-muted rounded-lg overflow-hidden mb-4 aspect-video">
+                <img
+                  src={websitePreview}
+                  alt="Website Preview"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
-              
+
               <div className="flex gap-2">
-                <Button className="flex-1">
+                <Button className="flex-1" onClick={handleVisitWebsite}>
                   <Eye className="w-4 h-4 mr-2" />
                   Lihat Website
                 </Button>
